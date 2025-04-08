@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transactions</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" 
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Custom Styling */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 600px;
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            color: #343a40;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #007bff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .form-control, .btn {
+            height: 45px;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .transaction-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .transaction-list li {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 8px 0;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transaction-list li span {
+            font-weight: bold;
+        }
+
+        .transaction-list li:hover {
+            background: #e2e6ea;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a th:href="@{/transactions(username=${username})}">Transactions</a>
+        <a th:href="@{/budget(username=${username})}">View Budget</a>
+    </nav>
+    
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2>Transactions</h2>
+        <h4>Current Budget: ₹<span th:text="${budget}"></span></h4>
+
+        <!-- Transaction Form -->
+        <form action="/addTransaction" method="post">
+            <!-- Hidden input to track username -->
+            <input type="hidden" name="username" th:value="${username}" />
+
+            <div class="mb-3">
+                <label class="form-label">Type:</label>
+                <select name="type" class="form-select" required>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Amount:</label>
+                <input type="number" name="amount" step="0.01" class="form-control" placeholder="Enter amount" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description:</label>
+                <input type="text" name="description" class="form-control" placeholder="Enter description" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Add Transaction</button>
+        </form>
+
+        <!-- Transaction List -->
+        <h3 class="mt-4">Transaction List</h3>
+        <ul class="transaction-list">
+            <li th:each="transaction : ${transactions}">
+                <span th:text="${transaction.getDetails()}"></span>
+            </li>
+        </ul>
+    </div>
+
+</body>
+</html>
