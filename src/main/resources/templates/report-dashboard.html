@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Report Dashboard</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" 
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 600px;
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h5 {
+            color: #343a40;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #007bff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            border-radius: 20px;
+            font-size: 16px;
+            padding: 8px 20px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: black;
+            border: none;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a th:href="@{/transactions(username=${username})}">Transactions</a>
+        <a th:href="@{/budget(username=${username})}">View Budget</a>
+        <a th:href="@{/budget-manager(username=${username})}">Budget Manager</a>
+        <a th:href="@{/report/dashboard(username=${username})}">Reports</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2 class="mb-4">📊 View Your Reports</h2>
+
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h5 class="card-title">Bar Chart Report</h5>
+                <p class="card-text">Visualize your category-wise spending using a bar chart.</p>
+                <a th:href="@{'/report'(username=${username}, type='bar')}" class="btn btn-primary">View Bar Chart</a>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h5 class="card-title">Pie Chart Report</h5>
+                <p class="card-text">Understand spending distribution with a pie chart.</p>
+                <a th:href="@{'/report'(username=${username}, type='pie')}" class="btn btn-success">View Pie Chart</a>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body text-center">
+                <h5 class="card-title">Line Chart Report</h5>
+                <p class="card-text">See your income and expense trend month-wise.</p>
+                <a th:href="@{'/report'(username=${username}, type='line')}" class="btn btn-warning">View Line Chart</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

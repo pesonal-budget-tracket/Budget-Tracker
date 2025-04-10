@@ -9,15 +9,6 @@
             background-color: #f8f9fa;
         }
 
-        .container {
-            max-width: 700px;
-            margin-top: 30px;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
-        }
-
         nav {
             background-color: #007bff;
             padding: 15px;
@@ -34,6 +25,42 @@
         nav a:hover {
             text-decoration: underline;
         }
+
+        .container {
+            max-width: 800px;
+            margin-top: 30px;
+        }
+
+        .section-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h5.section-title {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .summary-list p {
+            margin-bottom: 5px;
+        }
+
+        .list-group-item strong {
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -42,102 +69,109 @@
 <nav>
     <a th:href="@{/transactions(username=${username})}">Transactions</a>
     <a th:href="@{/budget(username=${username})}">View Budget</a>
-    <a th:href="@{/budget-manager(username=${username})}">Budget Manager</a> <!-- ✅ New link -->
+    <a th:href="@{/budget-manager(username=${username})}">Budget Manager</a>
+    <a th:href="@{/report/dashboard(username=${username})}">Reports</a>
 </nav>
 
-
-<!-- Main Content -->
+<!-- Page Content -->
 <div class="container">
-    <h2 class="text-center mb-3">Budget Manager</h2>
 
-    <!-- ✅ Success message -->
-    <div th:if="${message}" class="alert alert-success text-center" role="alert">
+    <!-- Success Message -->
+    <div th:if="${message}" class="alert alert-success text-center mt-3" role="alert">
         <span th:text="${message}"></span>
     </div>
 
-    <!-- ✅ Expected Budget Form -->
-    <h5>Set Expected Monthly Budget</h5>
-    <form th:action="@{/budget-manager/setExpectedBudget}" method="post" class="mb-4">
-        <input type="hidden" name="username" th:value="${username}" />
-        <div class="row">
-            <div class="col">
-                <label>Month:</label>
-                <input type="number" name="month" class="form-control" required>
+    <!-- Set Expected Monthly Budget -->
+    <div class="section-card">
+        <h5 class="section-title">📅 Set Expected Monthly Budget</h5>
+        <form th:action="@{/budget-manager/setExpectedBudget}" method="post">
+            <input type="hidden" name="username" th:value="${username}" />
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>Month:</label>
+                    <input type="number" name="month" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Year:</label>
+                    <input type="number" name="year" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Expected Income (₹):</label>
+                    <input type="number" name="expectedIncome" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Expected Expense (₹):</label>
+                    <input type="number" name="expectedExpense" class="form-control" required>
+                </div>
             </div>
-            <div class="col">
-                <label>Year:</label>
-                <input type="number" name="year" class="form-control" required>
-            </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col">
-                <label>Expected Income (₹):</label>
-                <input type="number" name="expectedIncome" class="form-control" required>
-            </div>
-            <div class="col">
-                <label>Expected Expense (₹):</label>
-                <input type="number" name="expectedExpense" class="form-control" required>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3 w-100">Save Expected Budget</button>
-    </form>
-    <div class="mt-4">
-        <h5>Monthly Summary</h5>
-        <p>Expected Income: ₹<span th:text="${expectedIncome}">0</span></p>
-        <p>Actual Income: ₹<span th:text="${actualIncome}">0</span></p>
-        <p>Expected Expense: ₹<span th:text="${expectedExpense}">0</span></p>
-        <p>Actual Expense: ₹<span th:text="${actualExpense}">0</span></p>
+            <button type="submit" class="btn btn-primary w-100">Save Expected Budget</button>
+        </form>
     </div>
-    
 
-    <!-- ✅ Category Budget Form -->
-    <h5>Set Category Budget</h5>
-    <form th:action="@{/budget-manager/setCategoryBudget}" method="post" class="mb-4">
-        <input type="hidden" name="username" th:value="${username}" />
-        <div class="row">
-            <div class="col">
-                <label>Category:</label>
-                <select name="category" class="form-select" required>
-                    <option value="Food">Food</option>
-                    <option value="Housing">Housing</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Utilities">Utilities</option>
-                    <option value="Transport">Transport</option>
-                    <option value="Healthcare">Healthcare</option>
-                    <option value="Salary">Salary</option>
-                    <option value="Shopping">Shopping</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-            <div class="col">
-                <label>Month:</label>
-                <input type="number" name="month" class="form-control" required>
-            </div>
-            <div class="col">
-                <label>Year:</label>
-                <input type="number" name="year" class="form-control" required>
-            </div>
-        </div>
-        <div class="mt-2">
-            <label>Budget Amount (₹):</label>
-            <input type="number" name="amount" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3 w-100">Save Category Budget</button>
-    </form>
-
-    <!-- ✅ Budget Status -->
-    <h5 class="mb-3">Category Budget Status</h5>
-    <div class="list-group">
-        <div th:if="${#maps.isEmpty(budgetStatus)}">
-            <p class="text-muted">No budget status to show.</p>
-        </div>
-        <div th:each="entry : ${budgetStatus}" 
-             class="list-group-item d-flex justify-content-between align-items-center">
-            <span><strong th:text="${entry.key}">Category</strong></span>
-            <span th:classappend="${entry.value.startsWith('✅')} ? 'text-success' : 'text-danger'"
-                  th:text="${entry.value}">Status</span>
+    <!-- Monthly Summary -->
+    <div class="section-card">
+        <h5 class="section-title">📊 Monthly Summary</h5>
+        <div class="summary-list">
+            <p>Expected Income: ₹<span th:text="${expectedIncome}">0</span></p>
+            <p>Actual Income: ₹<span th:text="${actualIncome}">0</span></p>
+            <p>Expected Expense: ₹<span th:text="${expectedExpense}">0</span></p>
+            <p>Actual Expense: ₹<span th:text="${actualExpense}">0</span></p>
         </div>
     </div>
+
+    <!-- Set Category Budget -->
+    <div class="section-card">
+        <h5 class="section-title">📂 Set Category Budget</h5>
+        <form th:action="@{/budget-manager/setCategoryBudget}" method="post">
+            <input type="hidden" name="username" th:value="${username}" />
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>Category:</label>
+                    <select name="category" class="form-select" required>
+                        <option value="Food">Food</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Salary">Salary</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Month:</label>
+                    <input type="number" name="month" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Year:</label>
+                    <input type="number" name="year" class="form-control" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label>Budget Amount (₹):</label>
+                    <input type="number" name="amount" class="form-control" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Save Category Budget</button>
+        </form>
+    </div>
+
+    <!-- Budget Status -->
+    <div class="section-card">
+        <h5 class="section-title">📌 Category Budget Status</h5>
+        <div class="list-group">
+            <div th:if="${#maps.isEmpty(budgetStatus)}">
+                <p class="text-muted">No budget status to show.</p>
+            </div>
+            <div th:each="entry : ${budgetStatus}" 
+                 class="list-group-item d-flex justify-content-between align-items-center">
+                <span><strong th:text="${entry.key}">Category</strong></span>
+                <span th:classappend="${entry.value.startsWith('✅')} ? 'text-success' : 'text-danger'"
+                      th:text="${entry.value}">Status</span>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 </body>

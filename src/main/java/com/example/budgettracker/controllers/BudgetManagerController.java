@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import com.example.budgettracker.observer.BudgetAlertNotifier;
+import com.example.budgettracker.observer.ConsoleBudgetAlert;
 
 @Controller
 public class BudgetManagerController {
@@ -30,13 +32,14 @@ public class BudgetManagerController {
         this.categoryBudgetService = categoryBudgetService;
         this.transactionService = transactionService;
     }
+    
+
     @GetMapping("/budget-manager")
 public String showBudgetManager(@RequestParam String username, Model model) {
     System.out.println("Rendering budget manager for: " + username);
 
     model.addAttribute("username", username);
 
-    // Current month and year
     LocalDate now = LocalDate.now();
     int month = now.getMonthValue();
     int year = now.getYear();
@@ -44,12 +47,11 @@ public String showBudgetManager(@RequestParam String username, Model model) {
     ExpectedBudget expected = expectedBudgetService.getBudgetForUserAndMonth(username, month, year);
     double actualIncome = transactionService.getTotalIncomeForMonth(username, month, year);
     double actualExpense = transactionService.getTotalExpenseForMonth(username, month, year);
-    
-model.addAttribute("expectedIncome", expected != null ? expected.getExpectedIncome() : 0.0);
-model.addAttribute("expectedExpense", expected != null ? expected.getExpectedExpense() : 0.0);
-model.addAttribute("actualIncome", actualIncome);
-model.addAttribute("actualExpense", actualExpense);
 
+    model.addAttribute("expectedIncome", expected != null ? expected.getExpectedIncome() : 0.0);
+    model.addAttribute("expectedExpense", expected != null ? expected.getExpectedExpense() : 0.0);
+    model.addAttribute("actualIncome", actualIncome);
+    model.addAttribute("actualExpense", actualExpense);
 
     List<CategoryBudget> budgets = categoryBudgetService.getBudgetsForUserAndMonth(username, month, year);
     Map<String, String> budgetStatus = new LinkedHashMap<>();
@@ -64,8 +66,24 @@ model.addAttribute("actualExpense", actualExpense);
 
     model.addAttribute("budgetStatus", budgetStatus);
 
+    // 🔔 Observer logic — notify on over-budget situations
+    BudgetAlertNotifier notifier = new BudgetAlertNotifier();
+    notifier.register(new ConsoleBudgetAlert());
+
+    if (expected != null && actualExpense > expected.getExpectedExpense()) {
+        notifier.notify(username, "Overall Expense", expected.getExpectedExpense(), actualExpense);
+    }
+
+    for (CategoryBudget cb : budgets) {
+        double spent = transactionService.getTotalSpentForCategory(username, cb.getCategory(), month, year);
+        if (spent > cb.getBudgetAmount()) {
+            notifier.notify(username, cb.getCategory(), cb.getBudgetAmount(), spent);
+        }
+    }
+
     return "budget-manager";
 }
+
 
     @PostMapping("/budget-manager/setExpectedBudget")
     public String handleExpectedBudget(
