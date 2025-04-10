@@ -35,13 +35,16 @@ public class TransactionController {
     }
 
     @PostMapping("/addTransaction")
+
     public String addTransaction(
             @RequestParam String username,
             @RequestParam String type,
             @RequestParam double amount,
+            @RequestParam String category,
             @RequestParam String description) {
 
-        transactionService.addTransaction(username, type, amount, new Date(), description);
+            transactionService.addTransaction(username, type, amount, new Date(), description, category);
+
         return "redirect:/transactions?username=" + username;
     }
 }
