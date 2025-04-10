@@ -7,11 +7,11 @@ import com.example.budgettracker.model.IncomeTransaction;
 import com.example.budgettracker.model.Transaction;
 
 public class TransactionFactory {
-    public static Transaction createTransaction(String type, double amount, Date date, String description) {
+    public static Transaction createTransaction(String type, double amount, Date date, String description, String category) {
         if ("income".equalsIgnoreCase(type)) {
-            return new IncomeTransaction(amount, date, description);
+            return new IncomeTransaction(amount, date, description, category);
         } else if ("expense".equalsIgnoreCase(type)) {
-            return new ExpenseTransaction(amount, date, description);
+            return new ExpenseTransaction(amount, date, description, category);
         } else {
             throw new IllegalArgumentException("Invalid transaction type: " + type);
         }

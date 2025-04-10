@@ -86,7 +86,7 @@ public class UserManager {
             File file = new File(filename);
             if (!file.exists()) {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                    writer.write("type,amount,description,date");
+                    writer.write("type,amount,description,category,date");
                     writer.newLine();
                 }
             }

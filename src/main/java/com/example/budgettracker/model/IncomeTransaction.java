@@ -1,14 +1,17 @@
-package com.example.budgettracker.model; // Ensure correct package
-import java.util.Date; // Import necessary class
+package com.example.budgettracker.model;
 
-public class IncomeTransaction extends Transaction {  
-    public IncomeTransaction(double amount, Date date, String description) {
-        super(amount, date, description);  // Call the parent constructor
+import java.util.Date;
+
+public class IncomeTransaction extends Transaction {
+    public IncomeTransaction(double amount, Date date, String description, String category) {
+        super(amount, date, description, category);
     }
 
     @Override
     public String getDetails() {
-        return String.format("[Income] Amount: $%.2f, Date: %s, Description: %s", 
-                              amount, date.toString(), description);
+        return "[Income] Amount: " + amount +
+               ", Date: " + date +
+               ", Description: " + description +
+               ", Category: " + category;
     }
 }

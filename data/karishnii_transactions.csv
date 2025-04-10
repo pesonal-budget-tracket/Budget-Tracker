@@ -1,3 +1,5 @@
-type,amount,description,date
-IncomeTransaction,20000.0,salary,2025-04-07
-ExpenseTransaction,10000.0,perfume,2025-04-07
+type,amount,description,category,date
+ExpenseTransaction,1000.0,movie,Entertainment,2025-04-09
+IncomeTransaction,1000000.0,salary,Food,2025-04-09
+ExpenseTransaction,10000.0,movie,Entertainment,2025-04-09
+ExpenseTransaction,1000.0,rent,Housing,2025-04-10

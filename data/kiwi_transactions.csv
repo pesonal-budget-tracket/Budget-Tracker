@@ -1,0 +1,4 @@
+type,amount,description,category,date
+IncomeTransaction,1000000.0,salary,Salary,2025-04-09
+ExpenseTransaction,1000.0,movie,Entertainment,2025-04-09
+ExpenseTransaction,2000.0,pizza,Food,2025-04-09
