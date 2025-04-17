@@ -18,6 +18,7 @@ com/example/budgettracker/strategy/BarChartReportStrategy.class
 com/example/budgettracker/factory/TransactionFactory.class
 com/example/budgettracker/controllers/UserController.class
 com/example/budgettracker/controllers/HomeController.class
+com/example/budgettracker/strategy/LineChartReportStrategy.class
 com/example/budgettracker/observer/ConsoleBudgetAlert.class
 com/example/budgettracker/App.class
 com/example/budgettracker/model/ExpenseTransaction.class
@@ -25,3 +26,4 @@ com/example/budgettracker/model/ExpectedBudget.class
 com/example/budgettracker/model/Transaction.class
 com/example/budgettracker/controllers/BudgetController.class
 com/example/budgettracker/model/CategoryBudget.class
+com/example/budgettracker/strategy/PieChartReportStrategy.class

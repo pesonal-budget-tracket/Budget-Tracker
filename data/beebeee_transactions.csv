@@ -1,0 +1,2 @@
+type,amount,description,category,date
+IncomeTransaction,55555.0,money,Salary,2025-04-17
